@@ -1,0 +1,50 @@
+---
+title: "Regression Project"
+format: html
+editor: visual
+---
+
+## Data Loading and Cleaning:
+
+Data source: <https://catalog.data.gov/dataset/crime-data-from-2020-to-present>
+
+```{r}
+library(tidyverse)
+library(ggcorrplot)
+```
+
+```{r}
+movie_csv <- read.csv("Data/Highest Holywood Grossing Movies.csv")
+```
+
+```{r}
+movie_data <- head(movie_csv, n = 500)
+movie_data <- movie_data %>%
+  select(-X, -Movie.Info, -`Budget..in...`)
+as.integer(str_extract(movie_data$Running.Time, "\\d+")) * 60
+```
+
+## 1.
+
+```{r}
+head(movie_data)
+```
+
+We have a 500 observation data frame containg 500 movies and 14 columns to use. These include 6 quantitative variables, 1 ordinal variable, and 7 qualatative variables. The y variable we will be seeking is International Sales in USD.
+
+## 2.
+
+```{r}
+library(ggcorrplot)
+
+```
+
+```{r}
+quant_model <- lm(`World.Wide.Sales..in...` ~ Year + `Domestic.Sales..in...` + `International.Sales..in...`, data = movie_data)
+summary(quant_model)
+```
+
+```{r}
+qual_model <- lm(`World.Wide.Sales..in...` ~ Year + `Domestic.Sales..in...` + `International.Sales..in...` + License,  data = movie_data)
+summary(qual_model)
+```
